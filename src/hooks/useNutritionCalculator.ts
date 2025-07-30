@@ -40,13 +40,15 @@ export const useNutritionCalculator = () => {
 
   const searchFood = async (foodName: string): Promise<NutritionData | null> => {
     try {
-      // Clean the food name for search (remove quantities, units)
-      const cleanName = foodName
-        .replace(/^\d+(?:\.\d+)?(?:g|kg|ml|l|unidade|unidades|colher|colheres|xícara|xícaras|fatia|fatias)?\s*/i, '')
+      // Clean the food name for search (remove quantities, units, but preserve main food name)
+      let cleanName = foodName
+        .replace(/^\d+(?:\.\d+)?\s*(g|kg|ml|l|unidade|unidades|colher|colheres|xícara|xícaras|fatia|fatias)\s*/i, '')
+        .replace(/^\d+\s*/i, '') // Remove numbers without units
+        .replace(/^de\s+/i, '') // Remove "de" at the beginning
         .trim()
         .toLowerCase();
 
-      console.log('Searching for food:', cleanName);
+      console.log('Searching for food:', cleanName, 'from original:', foodName);
 
       // Search in the foods table using ilike for partial matching
       const { data, error } = await supabase
