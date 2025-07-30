@@ -65,14 +65,14 @@ export const MealForm: React.FC<MealFormProps> = ({
             value={meal.protocol}
             onChange={(e) => onUpdate(meal.id, { protocol: e.target.value })}
             placeholder={`Exemplo:
-100g aveia
-200ml leite desnatado
-1 banana média
-15ml azeite`}
+100g aveia;
+200ml leite desnatado;
+1 banana média;
+15ml azeite;`}
             className="min-h-[120px] font-mono text-sm"
           />
           <p className="text-xs text-muted-foreground">
-            💡 Digite cada alimento em uma linha nova. Ex: "100g peito de frango"
+            💡 Separe cada alimento com ponto e vírgula (;). Ex: "100g peito de frango; 150g arroz;"
           </p>
         </div>
       </CardContent>

@@ -8,6 +8,7 @@ import { Calculator, Download, Plus, Minus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { MealForm } from './MealForm';
 import { NutritionResults } from './NutritionResults';
+import { FoodsList } from './FoodsList';
 import { useNutritionCalculator } from '@/hooks/useNutritionCalculator';
 
 export interface Meal {
@@ -41,9 +42,9 @@ export const NutritionCalculator: React.FC = () => {
   const [studentWeight, setStudentWeight] = useState<number>(70);
   const [mealsCount, setMealsCount] = useState<number>(3);
   const [meals, setMeals] = useState<Meal[]>([
-    { id: '1', name: 'Café da manhã', protocol: '100g aveia\n200ml leite desnatado\n1 banana' },
-    { id: '2', name: 'Almoço', protocol: '150g peito de frango\n100g arroz integral\n80g brócolis' },
-    { id: '3', name: 'Jantar', protocol: '120g salmão\n150g batata doce\n50g espinafre' }
+    { id: '1', name: 'Café da manhã', protocol: '100g aveia; 200ml leite desnatado; 1 banana;' },
+    { id: '2', name: 'Almoço', protocol: '150g peito de frango; 100g arroz integral; 80g brócolis;' },
+    { id: '3', name: 'Jantar', protocol: '120g salmão; 150g batata doce; 50g espinafre;' }
   ]);
   
   const { calculateNutrition, isLoading } = useNutritionCalculator();
@@ -237,6 +238,9 @@ export const NutritionCalculator: React.FC = () => {
             )}
           </Button>
         </div>
+
+        {/* Foods List */}
+        <FoodsList />
 
         {/* Results */}
         {results.length > 0 && (

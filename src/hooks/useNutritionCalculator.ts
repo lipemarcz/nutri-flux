@@ -6,11 +6,36 @@ export const useNutritionCalculator = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const parseProtocol = (protocol: string): string[] => {
-    // Regex para extrair alimentos: captura quantidade + unidade + nome do alimento
-    const regex = /^(\d+(?:\.\d+)?(?:g|kg|ml|l|unidade|unidades|colher|colheres|xícara|xícaras|fatia|fatias)?\s+.+)/gm;
-    const matches = protocol.match(regex) || [];
+    // Split by semicolon and filter out empty items
+    const items = protocol.split(';').map(item => item.trim()).filter(item => item.length > 0);
     
-    return matches.map(match => match.trim()).filter(item => item.length > 0);
+    // Process each item to handle "OU" (OR) alternatives
+    const processedItems: string[] = [];
+    
+    for (const item of items) {
+      // Check if item contains "OU" (OR alternatives)
+      if (item.toLowerCase().includes(' ou ')) {
+        // Split by "OU" and take the first option for calculation
+        const alternatives = item.split(/\s+ou\s+/i);
+        if (alternatives.length > 0) {
+          // Use the first alternative for calculation
+          const firstOption = alternatives[0].trim();
+          // Clean up any extra characters like "+" at the beginning
+          const cleanOption = firstOption.replace(/^\+\s*/, '').trim();
+          if (cleanOption) {
+            processedItems.push(cleanOption);
+          }
+        }
+      } else {
+        // Clean up any extra characters like "+" at the beginning
+        const cleanItem = item.replace(/^\+\s*/, '').trim();
+        if (cleanItem) {
+          processedItems.push(cleanItem);
+        }
+      }
+    }
+    
+    return processedItems;
   };
 
   const searchFood = async (foodName: string): Promise<NutritionData | null> => {
